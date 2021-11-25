@@ -225,6 +225,32 @@ BankAccount **readAccounts()
      while (inputFile && (counter < K_SizeMax - 1))
      {
           // YOU HAVE TO DO SOMETHING FROM HERE !!!
+          BankAccount *p;
+          if (TypeRead == 01)
+          {
+               BankAccount temp{accountRead, TypeRead, nameRead, dateRead, balanceRead};
+               p = &temp;
+               //pAccount[counter++] = p;
+          }
+          else if (TypeRead == 02)
+          {
+               BankAccount temp{accountRead, TypeRead, nameRead, dateRead, balanceRead};
+               p = &temp;
+               //pAccount[counter++] = p;
+          }
+          else if (TypeRead == 03)
+          {
+               DepositAccount temp{accountRead, TypeRead, nameRead, dateRead, balanceRead, nbyearRead};
+               p = &temp;
+               //pAccount[counter++] = p;
+          }
+          else if (TypeRead == 04)
+          {
+               LoanAccount temp{accountRead, TypeRead, nameRead, dateRead, balanceRead, nbyearRead, RateRead};
+               p = &temp;
+               //pAccount[counter++] = p;
+          }
+          pAccount[counter] = p;
 
           // UNTIL THIS POINT.
 
