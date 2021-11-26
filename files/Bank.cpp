@@ -225,50 +225,19 @@ BankAccount **readAccounts()
      while (inputFile && (counter < K_SizeMax - 1))
      {
           // YOU HAVE TO DO SOMETHING FROM HERE !!!
-          //cout << "Printing:" << endl;
-          //cout << accountRead << "," << TypeRead << "," << dateRead << "," << balanceRead << "," << nbyearRead << "," << RateRead << "," << nameRead << endl;
-          BankAccount *p;
-
           if (TypeRead < 3)
           {
-               BankAccount *temp = new BankAccount{accountRead, TypeRead, nameRead, dateRead, balanceRead};
-               p = temp;
-               cout << "Id:" << p->getAccountId() << endl;
-               cout << "Type:" << p->getType() << endl;
-               cout << "Name:" << p->getClientName() << endl;
-               cout << "Update:" << p->getUpdatedate() << endl;
-               cout << "Balance:" << p->getBalance() << endl;
+               *pAccount = new BankAccount{accountRead, TypeRead, nameRead, dateRead, balanceRead};
           }
           else if (TypeRead == 03)
           {
-               DepositAccount *temp = new DepositAccount{accountRead, TypeRead, nameRead, dateRead, balanceRead, nbyearRead};
-               p = temp;
-               cout << "Id:" << p->getAccountId() << endl;
-               cout << "Type:" << p->getType() << endl;
-               cout << "Name:" << p->getClientName() << endl;
-               cout << "Update:" << p->getUpdatedate() << endl;
-               cout << "Balance:" << p->getBalance() << endl;
-               cout << "nbYear:" << temp->getNbYears() << endl;
-               cout << "Rate:" << temp->getRate() << endl;
+               *pAccount = new DepositAccount{accountRead, TypeRead, nameRead, dateRead, balanceRead, nbyearRead};
           }
           else
           {
-               LoanAccount *temp = new LoanAccount{accountRead, TypeRead, nameRead, dateRead, balanceRead, nbyearRead, RateRead};
-               p = temp;
-               cout << "Id:" << p->getAccountId() << endl;
-               cout << "Type:" << p->getType() << endl;
-               cout << "Name:" << p->getClientName() << endl;
-               cout << "Update:" << p->getUpdatedate() << endl;
-               cout << "Balance:" << p->getBalance() << endl;
-               cout << "nbYear:" << temp->getNbYears() << endl;
-               cout << "Rate:" << temp->getRate() << endl;
+               *pAccount = new LoanAccount{accountRead, TypeRead, nameRead, dateRead, balanceRead, nbyearRead, RateRead};
           }
-          *pAccount = p;
-
-          cout << endl;
-
           // UNTIL THIS POINT.
-
           inputFile >> accountRead >> TypeRead >> dateRead >> balanceRead >> nbyearRead >> RateRead;
           inputFile.getline(nameRead, 60);
           pAccount++;
@@ -277,7 +246,9 @@ BankAccount **readAccounts()
      *pAccount = new BankAccount();
 
 
-     cout << "Final For Loop Test----------------------" << endl;
+
+     //For test printing
+     cout << "----------------------Print Test----------------------" << endl;
      for (int i = 0; i < K_SizeMax; i++)
      {
           if (listAccounts[i]->getAccountId() == 0)
@@ -285,15 +256,23 @@ BankAccount **readAccounts()
                cout << "DONE!" << endl;
                break;
           }
-          cout << "i:" << i << endl;
           cout << "Id:" << listAccounts[i]->getAccountId() << endl;
           cout << "Type:" << listAccounts[i]->getType() << endl;
           cout << "Name:" << listAccounts[i]->getClientName() << endl;
           cout << "Update:" << listAccounts[i]->getUpdatedate() << endl;
           cout << "Balance:" << listAccounts[i]->getBalance() << endl;
+
+          DepositAccount* subClassPtr1 = dynamic_cast<DepositAccount*> (listAccounts[i]);
+          if (subClassPtr1 != nullptr){
+            cout << "nbYear:" << subClassPtr1->getNbYears() << endl;
+            cout << "Rate:" << subClassPtr1->getRate() << endl;
+          }
+          LoanAccount* subClassPtr2 = dynamic_cast<LoanAccount*> (listAccounts[i]);
+          if (subClassPtr2 != nullptr){
+            cout << "nbYear:" << subClassPtr2->getNbYears() << endl;
+            cout << "Rate:" << subClassPtr2->getRate() << endl;
+          }
           cout << endl;
-          //cout << "nbYear:" << listAccounts[i]->getNbYears() << endl;
-          //cout << "Rate:" << listAccounts[i]->getRate() << endl;
      }
 
 
@@ -424,7 +403,7 @@ void displayAccounts(BankAccount **listAccounts)
 
      //(** listAccounts).print();
 
-     listAccounts[i]->print();
+     //listAccounts[i]->print();
      //listAccounts[1]->print();
 
      /*
@@ -470,10 +449,9 @@ void displayAccounts(BankAccount **listAccounts)
 int main()
 {
      BankAccount **list = readAccounts();
-     
+     /*
      sortAccounts(list);
      displayAccounts(list);
-     /*
      updateAccounts(list);
      cout << endl
           << endl;
