@@ -225,32 +225,47 @@ BankAccount **readAccounts()
      while (inputFile && (counter < K_SizeMax - 1))
      {
           // YOU HAVE TO DO SOMETHING FROM HERE !!!
+          //cout << "Printing:" << endl;
+          //cout << accountRead << "," << TypeRead << "," << dateRead << "," << balanceRead << "," << nbyearRead << "," << RateRead << "," << nameRead << endl;
           BankAccount *p;
-          if (TypeRead == 01)
+
+          if (TypeRead < 3)
           {
-               BankAccount temp{accountRead, TypeRead, nameRead, dateRead, balanceRead};
-               p = &temp;
-               //pAccount[counter++] = p;
-          }
-          else if (TypeRead == 02)
-          {
-               BankAccount temp{accountRead, TypeRead, nameRead, dateRead, balanceRead};
-               p = &temp;
-               //pAccount[counter++] = p;
+               BankAccount *temp = new BankAccount{accountRead, TypeRead, nameRead, dateRead, balanceRead};
+               p = temp;
+               cout << "Id:" << p->getAccountId() << endl;
+               cout << "Type:" << p->getType() << endl;
+               cout << "Name:" << p->getClientName() << endl;
+               cout << "Update:" << p->getUpdatedate() << endl;
+               cout << "Balance:" << p->getBalance() << endl;
           }
           else if (TypeRead == 03)
           {
-               DepositAccount temp{accountRead, TypeRead, nameRead, dateRead, balanceRead, nbyearRead};
-               p = &temp;
-               //pAccount[counter++] = p;
+               DepositAccount *temp = new DepositAccount{accountRead, TypeRead, nameRead, dateRead, balanceRead, nbyearRead};
+               p = temp;
+               cout << "Id:" << p->getAccountId() << endl;
+               cout << "Type:" << p->getType() << endl;
+               cout << "Name:" << p->getClientName() << endl;
+               cout << "Update:" << p->getUpdatedate() << endl;
+               cout << "Balance:" << p->getBalance() << endl;
+               cout << "nbYear:" << temp->getNbYears() << endl;
+               cout << "Rate:" << temp->getRate() << endl;
           }
-          else if (TypeRead == 04)
+          else
           {
-               LoanAccount temp{accountRead, TypeRead, nameRead, dateRead, balanceRead, nbyearRead, RateRead};
-               p = &temp;
-               //pAccount[counter++] = p;
+               LoanAccount *temp = new LoanAccount{accountRead, TypeRead, nameRead, dateRead, balanceRead, nbyearRead, RateRead};
+               p = temp;
+               cout << "Id:" << p->getAccountId() << endl;
+               cout << "Type:" << p->getType() << endl;
+               cout << "Name:" << p->getClientName() << endl;
+               cout << "Update:" << p->getUpdatedate() << endl;
+               cout << "Balance:" << p->getBalance() << endl;
+               cout << "nbYear:" << temp->getNbYears() << endl;
+               cout << "Rate:" << temp->getRate() << endl;
           }
-          pAccount[counter] = p;
+          *pAccount = p;
+
+          cout << endl;
 
           // UNTIL THIS POINT.
 
@@ -260,6 +275,29 @@ BankAccount **readAccounts()
           counter++;
      }
      *pAccount = new BankAccount();
+
+
+     cout << "Final For Loop Test----------------------" << endl;
+     for (int i = 0; i < K_SizeMax; i++)
+     {
+          if (listAccounts[i]->getAccountId() == 0)
+          {
+               cout << "DONE!" << endl;
+               break;
+          }
+          cout << "i:" << i << endl;
+          cout << "Id:" << listAccounts[i]->getAccountId() << endl;
+          cout << "Type:" << listAccounts[i]->getType() << endl;
+          cout << "Name:" << listAccounts[i]->getClientName() << endl;
+          cout << "Update:" << listAccounts[i]->getUpdatedate() << endl;
+          cout << "Balance:" << listAccounts[i]->getBalance() << endl;
+          cout << endl;
+          //cout << "nbYear:" << listAccounts[i]->getNbYears() << endl;
+          //cout << "Rate:" << listAccounts[i]->getRate() << endl;
+     }
+
+
+
      return listAccounts;
 }
 
@@ -383,13 +421,59 @@ void displayAccounts(BankAccount **listAccounts)
           << endl;
 
      int i = 0;
+
+     //(** listAccounts).print();
+
+     listAccounts[i]->print();
+     //listAccounts[1]->print();
+
+     /*
+     for (; i < K_SizeMax - 1; i++)
+     {
+         listAccounts[i]->print();
+     }
+     */
+
+     /*
+     * while (i < K_SizeMax)
+     {
+
+
+         if ((listAccounts[i]->getType() == 03) || (listAccounts[i]->getType() == 04))
+          {
+               cout << "Client name: " << listAccounts[i]->getClientName() << endl;
+               cout << "Bank Account: " << listAccounts[i]->getAccountId() << endl;
+               cout << "Type: " << listAccounts[i]->getType() << endl;
+               cout << "Update Date: " << listAccounts[i]->getUpdatedate() << endl;
+               cout << "Balance: " << listAccounts[i]->getBalance() << endl;
+               cout << "Nb. Years: " << listAccounts[i]->getNbYears() << endl;
+               cout << "Rate: " << listAccounts[i]->getRate() << endl;
+          }
+          else
+          {
+               cout << "Client name: " << listAccounts[i]->getClientName() << endl;
+               cout << "Bank Account: " << listAccounts[i]->getAccountId() << endl;
+               cout << "Type: " << listAccounts[i]->getType() << endl;
+               cout << "Update Date: " << listAccounts[i]->getUpdatedate() << endl;
+               cout << "Balance: " << listAccounts[i]->getBalance() << endl;
+               cout << "Nb. Years: " << endl;
+               cout << "Rate: " << endl;
+          }
+
+     listAccounts[i]->print();
+
+     i++;
+}
+     */
 }
 
 int main()
 {
      BankAccount **list = readAccounts();
+     
      sortAccounts(list);
      displayAccounts(list);
+     /*
      updateAccounts(list);
      cout << endl
           << endl;
@@ -398,6 +482,7 @@ int main()
      cout << "               ************************************************" << endl;
      displayAccounts(list);
      cout << endl;
+     */
 
      system("PAUSE");
      return 0;
