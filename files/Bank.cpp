@@ -248,6 +248,7 @@ BankAccount **readAccounts()
 
 
      //For test printing
+     /*
      cout << "----------------------Print Test----------------------" << endl;
      for (int i = 0; i < K_SizeMax; i++)
      {
@@ -274,6 +275,7 @@ BankAccount **readAccounts()
           }
           cout << endl;
      }
+     */
 
 
 
