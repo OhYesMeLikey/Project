@@ -175,6 +175,8 @@ inline void Transaction::setAmount(double amountTr)
      amount = amountTr;
 }
 
+
+
 //****************************************************************************
 // Purpose: Sort a list of bank accounts in ascending order of ids and types.
 //
@@ -187,6 +189,8 @@ inline void Transaction::setAmount(double amountTr)
 void sortAccounts(BankAccount **list)
 {
 }
+
+
 
 //******************************************************************
 // Purpose: This function reads the file 'clients.txt' and builds
@@ -278,6 +282,8 @@ BankAccount **readAccounts()
      return listAccounts;
 }
 
+
+
 //*****************************************************************************************
 // Purpose: This function validates whether the transaction code
 //          corresponds to the correct account:
@@ -363,6 +369,8 @@ void LoanAccount::executeTransaction(const Transaction trans)
      }
 }
 
+
+
 //*************************************************************************
 // Purpose: This function allows to read the file 'transact.txt'
 //          and to update the accounts concerned by the transactions read.
@@ -373,7 +381,42 @@ void LoanAccount::executeTransaction(const Transaction trans)
 void updateAccounts(BankAccount **listAccounts)
 {
      ifstream inputFile("transact.txt"); // Opening the input file
+     if (!inputFile)                    // If the file is not found...
+     {
+          cout << "File not found !!!" << endl;
+          exit(0);
+     }
+
+     int accountId, accountType, date, transType ;
+     double amount;
+
+     while (inputFile) {
+       inputFile >> accountId >> accountType >> date >> transType >> amount;
+       Transaction newTransaction = Transaction(accountId, accountType, date, transType, amount);
+
+       // For testing
+       /*
+       cout << "Transaction Details" << endl;
+       cout << "AccId: " << accountId << endl;
+       cout << "AccType: " << accountType << endl;
+       cout << "Date: " << date << endl;
+       cout << "TransType: " << transType << endl;
+       cout << "Amount: " << amount << endl << endl;
+       */
+
+       int index = 0;
+       while ((listAccounts[index]->getAccountId()) != 0)
+       {
+         if ( ((listAccounts[index]->getAccountId()) == accountId) && ((listAccounts[index]->getType()) == accountType) ){
+           listAccounts[index]->executeTransaction(newTransaction);
+         }
+         index ++;
+       }
+
+     }
 }
+
+
 
 //******************************************************************************
 // Purpose: This function displays the list of bank accounts for all customers.
@@ -554,6 +597,8 @@ void displayAccounts(BankAccount **listAccounts)
      }
 }
 
+
+
 int main()
 {
      BankAccount **list = readAccounts();
@@ -569,6 +614,6 @@ int main()
      displayAccounts(list);
      cout << endl;
 
-     system("PAUSE");
+     //system("PAUSE");
      return 0;
 }
