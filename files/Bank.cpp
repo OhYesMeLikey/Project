@@ -188,6 +188,63 @@ inline void Transaction::setAmount(double amountTr)
 //****************************************************************************
 void sortAccounts(BankAccount **list)
 {
+     //We decided to sort based off ID first in ascending order, and for ACCOUNTS
+     //with the same id, they will be sorted based on account type also in ascending order.
+     //The overloaded comparison operator behaves abnormally for bankaccounts objects,
+     //will just use the getter methods to make direct member comparison.
+
+     //Implementing with bubble sort
+     for (int i = 0; i < K_SizeMax; i++)
+     {
+          if (list[i + 1]->getAccountId() == 0)
+          {
+               cout << "Done Sort" << endl;
+               break;
+          }
+
+          for (int j = 0; j < K_SizeMax; j++)
+          {
+               if (list[j + 1]->getAccountId() == 0)
+               {
+                    break;
+               }
+
+               int currentID = list[j]->getAccountId();
+               int nextID = list[j + 1]->getAccountId();
+
+               if (nextID < currentID)
+               {
+                    BankAccount *temp = list[j + 1];
+                    list[j + 1] = list[j];
+                    list[j] = temp;
+               }
+
+               //For when there are multiple account types for one ID.
+               else if (nextID == currentID)
+               {
+                 if (nextID < currentID)
+                 {
+                      BankAccount *temp = list[j + 1];
+                      list[j + 1] = list[j];
+                      list[j] = temp;
+                 }
+               }
+          }
+     }
+
+     //For testing purposes only
+     /*
+     cout << "Showing results" << endl;
+     for (int i = 0; i < K_SizeMax; i++)
+     {
+          cout << list[i]->getAccountId() << endl;
+          if (list[i + 1]->getAccountId() == 0)
+          {
+               //cout << "Done Sort" << endl;
+               break;
+          }
+     }
+     */
 }
 
 
