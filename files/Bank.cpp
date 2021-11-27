@@ -245,8 +245,6 @@ BankAccount **readAccounts()
      }
      *pAccount = new BankAccount();
 
-
-
      //For test printing
      /*
      cout << "----------------------Print Test----------------------" << endl;
@@ -276,8 +274,6 @@ BankAccount **readAccounts()
           cout << endl;
      }
      */
-
-
 
      return listAccounts;
 }
@@ -401,57 +397,124 @@ void displayAccounts(BankAccount **listAccounts)
      cout << "                       ------------------------------------------" << endl
           << endl;
 
+     // Manually sortting the list of bank accounts without the implementation of sort function
+     /*
+     for (int i = 0; i < count; i++)
+     {
+          for (int j = 0; j < count; j++)
+          {
+          }
+     }
+
      int i = 0;
 
-     //(** listAccounts).print();
-
-     //listAccounts[i]->print();
-     //listAccounts[1]->print();
-
-     /*
-     for (; i < K_SizeMax - 1; i++)
+     int diffPeople = 0;
+     double *totalSum = NULL;
+     for (int index = 0; index < K_SizeMax; index++)
      {
-         listAccounts[i]->print();
-     }
-     */
-
-     /*
-     * while (i < K_SizeMax)
-     {
-
-
-         if ((listAccounts[i]->getType() == 03) || (listAccounts[i]->getType() == 04))
+          int currentID = listAccounts[index]->getAccountId();
+          if (listAccounts[index]->getAccountId() == 0)
           {
-               cout << "Client name: " << listAccounts[i]->getClientName() << endl;
-               cout << "Bank Account: " << listAccounts[i]->getAccountId() << endl;
-               cout << "Type: " << listAccounts[i]->getType() << endl;
-               cout << "Update Date: " << listAccounts[i]->getUpdatedate() << endl;
-               cout << "Balance: " << listAccounts[i]->getBalance() << endl;
-               cout << "Nb. Years: " << listAccounts[i]->getNbYears() << endl;
-               cout << "Rate: " << listAccounts[i]->getRate() << endl;
+               break;
           }
           else
           {
-               cout << "Client name: " << listAccounts[i]->getClientName() << endl;
-               cout << "Bank Account: " << listAccounts[i]->getAccountId() << endl;
-               cout << "Type: " << listAccounts[i]->getType() << endl;
-               cout << "Update Date: " << listAccounts[i]->getUpdatedate() << endl;
-               cout << "Balance: " << listAccounts[i]->getBalance() << endl;
-               cout << "Nb. Years: " << endl;
-               cout << "Rate: " << endl;
+               int nextID == listAccounts[index + 1]->getAccountId();
+               if (currentId != nextID)
+               {
+                    diffPeople++;
+                    double *temp = new double[diffPeople];
+               }
+          }
+     }
+     */
+     int i = 0;
+     double totalSum = 0;
+
+     // Assumming the list is sorted in ascending order of account id, print out the list of bank accounts
+     while (i < K_SizeMax - 1)
+     {
+          // Checking if the current account is the "null" account
+          long currentID = listAccounts[i]->getAccountId();
+          if (currentID == 0)
+          {
+               break;
           }
 
-     listAccounts[i]->print();
+          // Assign the ID of the previous account if it exists
+          long prevID = listAccounts[i]->getAccountId();
+          if (i != 0)
+          {
+               prevID = listAccounts[i - 1]->getAccountId();
+          }
 
-     i++;
-}
-     */
+          // Assign the ID of the next account if it exists
+          long nextID = 0;
+          if (listAccounts[i + 1]->getAccountId() != 0)
+          {
+               nextID = listAccounts[i + 1]->getAccountId();
+          }
+
+          // Print the titles of each section for every different account
+          if ((i == 0) || (prevID != currentID))
+          {
+               totalSum = 0;
+               cout << "Client Name: " << listAccounts[i]->getClientName() << endl;
+               cout << "\n"
+                    << endl;
+               cout << "Bank Account"
+                    << "\t\t"
+                    << "Type"
+                    << "\t"
+                    << "Update Date"
+                    << "\t"
+                    << "Balance"
+                    << "\t\t"
+                    << "Nb. Years"
+                    << "\t"
+                    << "Rate"
+                    << endl;
+               cout << string(12, '-')
+                    << "\t\t"
+                    << string(4, '-')
+                    << "\t"
+                    << string(11, '-')
+                    << "\t"
+                    << string(7, '-')
+                    << "\t\t"
+                    << string(9, '-')
+                    << "\t"
+                    << string(4, '-')
+                    << endl;
+          }
+
+          /* Print the details of the last account of the user
+          and the combined balance of all of the person's accounts,
+          or print the details of the person's current account
+          */
+          if (currentID != nextID)
+          {
+               //totalSum += listAccounts[i]->getBalance();
+               listAccounts[i++]->print();
+               cout << "\n"
+                    << endl;
+               cout << "Total Amounts:" << totalSum << endl;
+               cout << "\n"
+                    << endl;
+          }
+          else
+          {
+               //totalSum += listAccounts[i]->getBalance();
+               listAccounts[i++]->print();
+          }
+          totalSum += listAccounts[i]->getBalance();
+     }
 }
 
 int main()
 {
      BankAccount **list = readAccounts();
-     /*
+
      sortAccounts(list);
      displayAccounts(list);
      updateAccounts(list);
@@ -462,7 +525,6 @@ int main()
      cout << "               ************************************************" << endl;
      displayAccounts(list);
      cout << endl;
-     */
 
      system("PAUSE");
      return 0;
