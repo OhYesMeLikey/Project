@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <iomanip>
 
+#include <string>
+
 #include "Bank.h"
 
 using namespace std;
@@ -95,6 +97,7 @@ void DepositAccount::print()
 {
      Bonus();
      BankAccount::print();
+
      cout.setf(ios::fixed);
      cout.precision(2);
      cout << "\t" << nbyears << "\t\t" << rate << endl;
@@ -186,17 +189,16 @@ inline void Transaction::setAmount(double amountTr)
 //****************************************************************************
 void sortAccounts(BankAccount **list)
 {
-     //We decided to sort based off ID first in ascending order, and for ACCOUNTS
+     //We decided to sort based off ID first in ascending order, and for accounts
      //with the same id, they will be sorted based on account type also in ascending order.
      //The overloaded comparison operator behaves abnormally for bankaccounts objects,
-     //will just use the getter methods to make direct member comparison.
+     //we will just use the getter methods to make direct member comparison.
 
      //Implementing with bubble sort
      for (int i = 0; i < K_SizeMax; i++)
      {
           if (list[i + 1]->getAccountId() == 0)
           {
-               //cout << "[Done Sort]" << endl;
                break;
           }
 
@@ -331,8 +333,6 @@ BankAccount **readAccounts()
           cout << endl;
      }
      */
-
-     //cout << "[Done Read]" << endl;
      return listAccounts;
 }
 
@@ -465,7 +465,50 @@ void updateAccounts(BankAccount **listAccounts)
                index++;
           }
      }
-     //cout << "[Done Update]" << endl;
+}
+
+void print(BankAccount **listAccounts, int pos)
+{
+     if (listAccounts[pos]->getType() == 3)
+     {
+          DepositAccount *temp = dynamic_cast<DepositAccount *>(listAccounts[pos]);
+          cout.setf(ios::fixed);
+          cout.precision(2);
+          cout << temp->getAccountId()
+               << "\t\t\t"
+               << temp->getType()
+               << "\t"
+               << temp->getUpdatedate()
+               << "\t\t"
+               << temp->getBalance()
+               << "\t"
+               << temp->getNbYears()
+               << "\t\t"
+               << temp->getRate()
+               << endl;
+     }
+     else if (listAccounts[pos]->getType() == 4)
+     {
+          LoanAccount *temp = dynamic_cast<LoanAccount *>(listAccounts[pos]);
+          cout.setf(ios::fixed);
+          cout.precision(2);
+          cout << temp->getAccountId()
+               << "\t\t\t"
+               << temp->getType()
+               << "\t"
+               << temp->getUpdatedate()
+               << "\t\t"
+               << temp->getBalance()
+               << "\t"
+               << temp->getNbYears()
+               << "\t\t"
+               << temp->getRate()
+               << endl;
+     }
+     else
+     {
+          listAccounts[pos]->print();
+     }
 }
 
 //******************************************************************************
@@ -490,42 +533,10 @@ void displayAccounts(BankAccount **listAccounts)
      cout << "                       ------------------------------------------" << endl
           << endl;
 
-     // Manually sortting the list of bank accounts without the implementation of sort function
-     /*
-     for (int i = 0; i < count; i++)
-     {
-          for (int j = 0; j < count; j++)
-          {
-          }
-     }
-
      int i = 0;
 
-     int diffPeople = 0;
-     double *totalSum = NULL;
-     for (int index = 0; index < K_SizeMax; index++)
-     {
-          int currentID = listAccounts[index]->getAccountId();
-          if (listAccounts[index]->getAccountId() == 0)
-          {
-               break;
-          }
-          else
-          {
-               int nextID == listAccounts[index + 1]->getAccountId();
-               if (currentId != nextID)
-               {
-                    diffPeople++;
-                    double *temp = new double[diffPeople];
-               }
-          }
-     }
-     */
-     int i = 0;
-
-     double totalSum = 0;
-
-     // Assumming the list is sorted in ascending order of account id, print out the list of bank accounts
+     double totalSum = 0.0;
+     // Assumming the list is sorted in ascending order of account id and type, print out the list of bank accounts
      while (i < K_SizeMax - 1)
      {
           // Checking if the current account is the "null" account
@@ -554,8 +565,7 @@ void displayAccounts(BankAccount **listAccounts)
           {
                totalSum = 0;
                cout << "Client Name: " << listAccounts[i]->getClientName() << endl;
-               cout << "\n"
-                    << endl;
+               cout << endl;
                cout << "Bank Account"
                     << "\t\t"
                     << "Type"
@@ -581,102 +591,69 @@ void displayAccounts(BankAccount **listAccounts)
                     << string(4, '-')
                     << endl;
           }
-          cout << endl;
-          cout << "totalSum now: " << totalSum << endl;
-          cout << "balance: " << listAccounts[i]->getBalance() << endl;
 
+          listAccounts[i]->print();
           totalSum += listAccounts[i]->getBalance();
 
-          cout << "totalSum after: " << totalSum << endl;
-
-          // Print the details of the last account of the user
-          //and the combined balance of all of the person's accounts,
+          //Print the details of the last account of the user and the combined balance of all of the person's accounts,
           //or print the details of the person's current account
+          cout << endl;
           if (currentID != nextID)
           {
+               //listAccounts[i++]->print();
+               //totalSum += listAccounts[i]->getBalance();
 
                cout << endl;
-               listAccounts[i++]->print();
-               cout << "\n"
-                    << endl;
 
-               cout << endl;
-               cout << "totalSum now: " << totalSum << endl;
-               cout << "balance: " << listAccounts[i]->getBalance() << endl;
-               cout << "totalSum after: " << totalSum << endl;
+               cout << "Total Amounts: " << totalSum << endl;
 
-               cout.setf(ios::fixed);
-               cout.precision(2);
-               cout << "Total Amounts: " << setprecision(10) << totalSum << endl;
-               cout << "\n"
-                    << endl;
+               cout << endl << endl << endl;
           }
-          else
-          {
-               cout << endl;
-               listAccounts[i++]->print();
-          }
+          i++;
      }
-
-     /*
-     while (i < K_SizeMax - 1)
-     {
-          // Checking if the current account is the "null" account
-          long currentID = listAccounts[i]->getAccountId();
-          if (currentID == 0)
-          {
-               break;
-          }
-
-          cout << "Client Name: " << listAccounts[i]->getClientName() << endl;
-          cout << "\n"
-               << endl;
-          cout << "Bank Account"
-               << "\t\t"
-               << "Type"
-               << "\t"
-               << "Update Date"
-               << "\t"
-               << "Balance"
-               << "\t\t"
-               << "Nb. Years"
-               << "\t"
-               << "Rate"
-               << endl;
-          cout << string(12, '-')
-               << "\t\t"
-               << string(4, '-')
-               << "\t"
-               << string(11, '-')
-               << "\t"
-               << string(7, '-')
-               << "\t\t"
-               << string(9, '-')
-               << "\t"
-               << string(4, '-')
-               << endl;
-          listAccounts[i++]->print();
-          cout << "\n"
-               << endl;
-     }
-     */
 }
+
+
+
+void oneTimeBonus(BankAccount **list){
+  //Sample output file implies that the DepositAccount::Bonus() function was applied once
+  //before or during the first display call for loan type accounts. And bonus() is applied everytime print()
+  //is called for deposit type account. This is a rather strange behavior, but our code will try to match this behavior.
+
+  //The following code is to apply the one-time bonus for loan accounts.
+  int index = 0;
+  while (list[index]->getAccountId() != 0){
+    if (list[index]->getType() == 4){
+      LoanAccount *temp = dynamic_cast<LoanAccount*>(list[index]);
+      double balance = temp->getBalance();
+      double rate = temp->getRate();
+      int years = temp->getNbYears();
+      temp->setBalance(balance + (balance * rate * (years) / 36000.00));
+    }
+    index++;
+  }
+}
+
+
+
+
 
 int main()
 {
      BankAccount **list = readAccounts();
 
+     oneTimeBonus(list);
+
      sortAccounts(list);
      displayAccounts(list);
      updateAccounts(list);
-     cout << endl
-          << endl;
+     cout << endl<< endl;
      cout << "               ************************************************" << endl;
      cout << "               * RE-DISPLAY OF DATA AFTER THE UPDATE *" << endl;
      cout << "               ************************************************" << endl;
      displayAccounts(list);
      cout << endl;
 
-     //system("PAUSE");
+     system("PAUSE");
      return 0;
 }
