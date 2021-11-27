@@ -429,6 +429,8 @@ void displayAccounts(BankAccount **listAccounts)
      }
      */
      int i = 0;
+
+     /*
      double totalSum = 0;
 
      // Assumming the list is sorted in ascending order of account id, print out the list of bank accounts
@@ -488,10 +490,9 @@ void displayAccounts(BankAccount **listAccounts)
                     << endl;
           }
 
-          /* Print the details of the last account of the user
-          and the combined balance of all of the person's accounts,
-          or print the details of the person's current account
-          */
+          // Print the details of the last account of the user
+          //and the combined balance of all of the person's accounts,
+          //or print the details of the person's current account
           if (currentID != nextID)
           {
                //totalSum += listAccounts[i]->getBalance();
@@ -508,6 +509,48 @@ void displayAccounts(BankAccount **listAccounts)
                listAccounts[i++]->print();
           }
           totalSum += listAccounts[i]->getBalance();
+     }
+     */
+
+     while (i < K_SizeMax - 1)
+     {
+          // Checking if the current account is the "null" account
+          long currentID = listAccounts[i]->getAccountId();
+          if (currentID == 0)
+          {
+               break;
+          }
+
+          cout << "Client Name: " << listAccounts[i]->getClientName() << endl;
+          cout << "\n"
+               << endl;
+          cout << "Bank Account"
+               << "\t\t"
+               << "Type"
+               << "\t"
+               << "Update Date"
+               << "\t"
+               << "Balance"
+               << "\t\t"
+               << "Nb. Years"
+               << "\t"
+               << "Rate"
+               << endl;
+          cout << string(12, '-')
+               << "\t\t"
+               << string(4, '-')
+               << "\t"
+               << string(11, '-')
+               << "\t"
+               << string(7, '-')
+               << "\t\t"
+               << string(9, '-')
+               << "\t"
+               << string(4, '-')
+               << endl;
+          listAccounts[i++]->print();
+          cout << "\n"
+               << endl;
      }
 }
 
