@@ -198,7 +198,7 @@ void sortAccounts(BankAccount **list)
      {
           if (list[i + 1]->getAccountId() == 0)
           {
-               cout << "Done Sort" << endl;
+               cout << "[Done Sort]" << endl;
                break;
           }
 
@@ -336,6 +336,7 @@ BankAccount **readAccounts()
      }
      */
 
+     cout << "[Done Read]" << endl;
      return listAccounts;
 }
 
@@ -471,6 +472,7 @@ void updateAccounts(BankAccount **listAccounts)
        }
 
      }
+     cout << "[Done Update]" << endl;
 }
 
 
