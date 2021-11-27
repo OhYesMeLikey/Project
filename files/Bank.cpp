@@ -175,8 +175,6 @@ inline void Transaction::setAmount(double amountTr)
      amount = amountTr;
 }
 
-
-
 //****************************************************************************
 // Purpose: Sort a list of bank accounts in ascending order of ids and types.
 //
@@ -198,7 +196,7 @@ void sortAccounts(BankAccount **list)
      {
           if (list[i + 1]->getAccountId() == 0)
           {
-               cout << "[Done Sort]" << endl;
+               //cout << "[Done Sort]" << endl;
                break;
           }
 
@@ -222,12 +220,12 @@ void sortAccounts(BankAccount **list)
                //For when there are multiple account types for one ID.
                else if (nextID == currentID)
                {
-                 if (nextID < currentID)
-                 {
-                      BankAccount *temp = list[j + 1];
-                      list[j + 1] = list[j];
-                      list[j] = temp;
-                 }
+                    if (nextID < currentID)
+                    {
+                         BankAccount *temp = list[j + 1];
+                         list[j + 1] = list[j];
+                         list[j] = temp;
+                    }
                }
           }
      }
@@ -246,8 +244,6 @@ void sortAccounts(BankAccount **list)
      }
      */
 }
-
-
 
 //******************************************************************
 // Purpose: This function reads the file 'clients.txt' and builds
@@ -336,11 +332,9 @@ BankAccount **readAccounts()
      }
      */
 
-     cout << "[Done Read]" << endl;
+     //cout << "[Done Read]" << endl;
      return listAccounts;
 }
-
-
 
 //*****************************************************************************************
 // Purpose: This function validates whether the transaction code
@@ -427,8 +421,6 @@ void LoanAccount::executeTransaction(const Transaction trans)
      }
 }
 
-
-
 //*************************************************************************
 // Purpose: This function allows to read the file 'transact.txt'
 //          and to update the accounts concerned by the transactions read.
@@ -439,21 +431,22 @@ void LoanAccount::executeTransaction(const Transaction trans)
 void updateAccounts(BankAccount **listAccounts)
 {
      ifstream inputFile("transact.txt"); // Opening the input file
-     if (!inputFile)                    // If the file is not found...
+     if (!inputFile)                     // If the file is not found...
      {
           cout << "File not found !!!" << endl;
           exit(0);
      }
 
-     int accountId, accountType, date, transType ;
+     int accountId, accountType, date, transType;
      double amount;
 
-     while (inputFile) {
-       inputFile >> accountId >> accountType >> date >> transType >> amount;
-       Transaction newTransaction = Transaction(accountId, accountType, date, transType, amount);
+     while (inputFile)
+     {
+          inputFile >> accountId >> accountType >> date >> transType >> amount;
+          Transaction newTransaction = Transaction(accountId, accountType, date, transType, amount);
 
-       // For testing
-       /*
+          // For testing
+          /*
        cout << "Transaction Details" << endl;
        cout << "AccId: " << accountId << endl;
        cout << "AccType: " << accountType << endl;
@@ -462,20 +455,18 @@ void updateAccounts(BankAccount **listAccounts)
        cout << "Amount: " << amount << endl << endl;
        */
 
-       int index = 0;
-       while ((listAccounts[index]->getAccountId()) != 0)
-       {
-         if ( ((listAccounts[index]->getAccountId()) == accountId) && ((listAccounts[index]->getType()) == accountType) ){
-           listAccounts[index]->executeTransaction(newTransaction);
-         }
-         index ++;
-       }
-
+          int index = 0;
+          while ((listAccounts[index]->getAccountId()) != 0)
+          {
+               if (((listAccounts[index]->getAccountId()) == accountId) && ((listAccounts[index]->getType()) == accountType))
+               {
+                    listAccounts[index]->executeTransaction(newTransaction);
+               }
+               index++;
+          }
      }
-     cout << "[Done Update]" << endl;
+     //cout << "[Done Update]" << endl;
 }
-
-
 
 //******************************************************************************
 // Purpose: This function displays the list of bank accounts for all customers.
@@ -532,7 +523,6 @@ void displayAccounts(BankAccount **listAccounts)
      */
      int i = 0;
 
-     /*
      double totalSum = 0;
 
      // Assumming the list is sorted in ascending order of account id, print out the list of bank accounts
@@ -591,29 +581,44 @@ void displayAccounts(BankAccount **listAccounts)
                     << string(4, '-')
                     << endl;
           }
+          cout << endl;
+          cout << "totalSum now: " << totalSum << endl;
+          cout << "balance: " << listAccounts[i]->getBalance() << endl;
+
+          totalSum += listAccounts[i]->getBalance();
+
+          cout << "totalSum after: " << totalSum << endl;
 
           // Print the details of the last account of the user
           //and the combined balance of all of the person's accounts,
           //or print the details of the person's current account
           if (currentID != nextID)
           {
-               //totalSum += listAccounts[i]->getBalance();
+
+               cout << endl;
                listAccounts[i++]->print();
                cout << "\n"
                     << endl;
-               cout << "Total Amounts:" << totalSum << endl;
+
+               cout << endl;
+               cout << "totalSum now: " << totalSum << endl;
+               cout << "balance: " << listAccounts[i]->getBalance() << endl;
+               cout << "totalSum after: " << totalSum << endl;
+
+               cout.setf(ios::fixed);
+               cout.precision(2);
+               cout << "Total Amounts: " << setprecision(10) << totalSum << endl;
                cout << "\n"
                     << endl;
           }
           else
           {
-               //totalSum += listAccounts[i]->getBalance();
+               cout << endl;
                listAccounts[i++]->print();
           }
-          totalSum += listAccounts[i]->getBalance();
      }
-     */
 
+     /*
      while (i < K_SizeMax - 1)
      {
           // Checking if the current account is the "null" account
@@ -654,9 +659,8 @@ void displayAccounts(BankAccount **listAccounts)
           cout << "\n"
                << endl;
      }
+     */
 }
-
-
 
 int main()
 {
