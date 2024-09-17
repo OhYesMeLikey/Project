@@ -56,13 +56,13 @@ class BankAccount
      // Type of an account
      Bool isBankAccount() const {return TRUE;}
      Bool isCheckingAccount() const {
-		 if(type == 01) 
+		 if(type == 01)
 			 return TRUE;
 		else
 			false;
 	 }
      Bool isSavingsAccount() const {
-		 if(type == 02) 
+		 if(type == 02)
 			 return TRUE;
 		 else
 			 false;
@@ -73,22 +73,31 @@ class BankAccount
 
      // Possible operations
      virtual Bool acceptWithdrawal() const {return TRUE;}
-	 
-	// Purpose: This function validates whether the transaction code 
+
+	// Purpose: This function validates whether the transaction code
 	//          corresponds to the correct account:
 	//              - 01 ==> account (01: Check, 02: Savings, 03: Deposit and 04: Loan)
 	//              - 02 ==> account (01: Check, 02: Savings)
 	//              - 03 ==> account (01: Check).
 	Bool validateTransaction(const Transaction trans) const; //
-	
-	// Purpose: This function is used to execute the transaction already performed 
+
+	// Purpose: This function is used to execute the transaction already performed
 	// (update the balance of an account).
     virtual void executeTransaction(const Transaction trans);
-	
+
 	virtual void print();
-	
+
     Bool operator<(BankAccount c) const {
-        return ((c.accountId < accountId) && (c.type < type)) ? TRUE : FALSE; 
+
+      //This overloaded operator behaves abnormally
+      //1. It is flipping the direction of the comparison.
+      //2. With both comparison for ID and Type, many bankaccounts will be determined to be equal.
+      //   exmaple: both (id=5,type=2) < (id=3,type=6) and (id=5,type=2) < (id=3,type=6) will return false.
+
+      //cout << "cid: " <<c.accountId << endl;
+      //cout << "id: "<<accountId << endl;
+      //cout << "cid < id: " << (c.accountId < accountId);
+        return ((c.accountId < accountId) && (c.type < type)) ? TRUE : FALSE;
      }
 
      // Accessing to the fields of an instance
@@ -125,7 +134,7 @@ class DepositAccount : public BankAccount
     Bool isDepositAccount() const {return TRUE;}
     Bool acceptWithdrawal() const {return TRUE;}
 
-    // Possible Operations 
+    // Possible Operations
     void print();
 
     // Accessing to the fields of an instance
@@ -135,7 +144,7 @@ class DepositAccount : public BankAccount
     // Modifying the fields of an instance
     void setNbYears(int nbyear);
     void Bonus();
-     
+
 private:
      static double rate;
      int nbyears;
@@ -155,11 +164,11 @@ class LoanAccount : public BankAccount
                     double balanceArg = 0.0, int nbyear = 1, double rt = 8.5);
      ~LoanAccount(){}
 
-     // Possible operations 
+     // Possible operations
      Bool isLoanAccount() const {return TRUE;}
      Bool acceptWithdrawal() const {return FALSE;}
-	 
-	// Purpose: This function is used to execute the transaction already performed 
+
+	// Purpose: This function is used to execute the transaction already performed
 	// (update the balance of an account).
      void executeTransaction(const Transaction trans);
      void print();
